@@ -1,0 +1,53 @@
+package controllers;
+
+import play.*;
+import play.mvc.*;
+
+import views.html.*;
+
+import java.sql.*;
+
+public class Application extends Controller {
+  
+  public static Result index() {
+               String s= "Hello Mr.View";
+  //    models.DB Select = new models.Select();
+   //  String rset1[]=new String[200];
+//    String id[]=new int[200];
+
+String st[] = {"firstValue","second","third","fourth"}   ;   //for testing i can able pass this array values from controller to view
+     // String sat[]= new array();
+      try {
+          String userName = "test";
+          String password = "test";
+
+          String url = "jdbc:mysql://localhost/playdb?characterEncoding=UTF-8";
+
+          // Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+          Connection con = DriverManager.getConnection(url, userName, password);
+          Statement stmt = con.createStatement();
+          System.out.println("Connected database successfully...");
+          String strSelect = "select * from computer";
+
+          //statement.setString(1, name);
+          ResultSet rset = stmt.executeQuery(strSelect);   // i stuggling to pass this sql array variable rset from controller to view
+          //rset1[]=rset;
+          while(rset.next()) {   // Move the cursor to the next row
+           String name=     rset.getString("name");
+          int id=   rset.getInt("id");
+
+              System.out.println( name + ", " + id);
+              //   newResult=Result.getString("name");
+              // ++rowCount;
+          }
+
+
+      }
+      catch(SQLException e) {
+          e.printStackTrace();
+          System.out.println("cant Connected database successfully...");
+      }
+    return ok(index.render(rset));  //rset is the sql array variable when i pass this i got the error  cannot find symbol [symbol: variable rset] [location: class controllers.Application] 
+  }
+  
+}
